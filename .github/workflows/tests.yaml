@@ -1,0 +1,32 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - main
+  
+jobs:
+  dependecies:
+    name: Dependencies
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      
+      - name: Setup Golang
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+
+  unit-tests:
+    name: Unit Tests
+    needs: dependecies
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      
+      - name: Running Unit Tests
+        uses: make test
