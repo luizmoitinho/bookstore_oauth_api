@@ -1,7 +1,16 @@
 package main
 
-import "github.com/luizmoitinho/bookstore_oauth_api/src/app"
+import (
+	"log"
+
+	"github.com/joho/godotenv"
+	"github.com/luizmoitinho/bookstore_oauth_api/src/app"
+)
 
 func main() {
+	if err := godotenv.Load(".env"); err != nil {
+		log.Fatal(err)
+	}
+
 	app.StartApplication()
 }
