@@ -10,7 +10,7 @@
 <h3 align="center"> Cassandra DB and Scalability into Large Scale</h3><br/>
 <img src="https://user-images.githubusercontent.com/27688422/217337478-04d24298-46cb-4d76-a95b-be5026b5d08f.png"/>
 
-## Start Cassandra Container
+## Cassandra DB
 ### start the first cassandra node
 ```shell
 docker-compose up -d 
