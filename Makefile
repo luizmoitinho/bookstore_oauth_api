@@ -7,7 +7,7 @@ run:
 	go run src/main.go
 
 docker/up:
-	docker-compose up -d
+	docker compose -f docker-compose.yml up -d
 
 docker/down:
 	docker-compose down
