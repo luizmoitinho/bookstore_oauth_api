@@ -2,6 +2,7 @@ version: '3'
 
 services:
   cassandra:
+    container_name: oauth_cassandra
     image: docker.io/bitnami/cassandra:latest
     ports:
       - '7000:7000'

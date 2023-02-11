@@ -8,6 +8,10 @@ import (
 	"github.com/luizmoitinho/bookstore_oauth_api/src/utils/errors"
 )
 
+const (
+	QUERY_BY_ACCESS_TOKEN = "SELECT access_token, user_id, client_id, expires FROM acess_tokens WHERE access_token=?;"
+)
+
 func New() DatabaseRepository {
 	return &dbRespository{}
 }
