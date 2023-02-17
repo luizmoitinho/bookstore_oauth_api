@@ -1,8 +1,9 @@
 
 test: 
 	- make docker/up
-	@go clean -cache
-	@go test -failfast $$(go list ./...) -cover
+	go clean -cache
+	go test -failfast $$(go list ./...) -cover
+	- make docker/down
 
 run:
 	go run src/main.go

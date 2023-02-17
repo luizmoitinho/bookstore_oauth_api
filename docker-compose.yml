@@ -9,11 +9,11 @@ services:
       - '9042:9042'
     volumes:
       - 'cassandra_data:/bitnami'
-    healthcheck:
-      test: [ "CMD", "/opt/bitnami/cassandra/bin/cqlsh", "-u cassandra", "-p cassandra" ,"-e \"describe keyspaces\"" ]
-      interval: 15s
-      timeout: 10s
-      retries: 10
+    # healthcheck:
+    #   test: [ "CMD", "/opt/bitnami/cassandra/bin/cqlsh", "-u cassandra", "-p cassandra" ,"-e \"describe keyspaces\"" ]
+    #   interval: 15s
+    #   timeout: 10s
+    #   retries: 10
     environment:
       - CASSANDRA_SEEDS=cassandra
       - CASSANDRA_PASSWORD_SEEDER=yes
