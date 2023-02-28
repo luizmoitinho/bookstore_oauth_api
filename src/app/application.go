@@ -16,6 +16,7 @@ var (
 )
 
 func StartApplication() {
+	cassandra.InitCluster()
 	session, dbErr := cassandra.GetSession()
 	if dbErr != nil {
 		panic(dbErr)
