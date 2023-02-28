@@ -27,40 +27,22 @@ type dbRespository struct {
 }
 
 func (db *dbRespository) UpdateExpirationTime(at access_token.AcessToken) *errors.RestError {
-	session, err := cassandra.GetSession()
-	if err != nil {
-		return errors.NewInternalServerError(err.Error())
-	}
-	defer session.Close()
-
-	if err := session.Query(QUERY_UPDATE_EXPIRE, at.Expires, at.Token).Exec(); err != nil {
+	if err := cassandra.GetSession().Query(QUERY_UPDATE_EXPIRE, at.Expires, at.Token).Exec(); err != nil {
 		return errors.NewInternalServerError(err.Error())
 	}
 	return nil
 }
 
 func (db *dbRespository) Create(at access_token.AcessToken) *errors.RestError {
-	session, err := cassandra.GetSession()
-	if err != nil {
-		return errors.NewInternalServerError(err.Error())
-	}
-	defer session.Close()
-
-	if err := session.Query(QUERY_INSERT_ACCESS_TOKEN, at.Token, at.UserID, at.ClientID, at.Expires).Exec(); err != nil {
+	if err := cassandra.GetSession().Query(QUERY_INSERT_ACCESS_TOKEN, at.Token, at.UserID, at.ClientID, at.Expires).Exec(); err != nil {
 		return errors.NewInternalServerError(err.Error())
 	}
 	return nil
 }
 
 func (db *dbRespository) GetByID(id string) (*access_token.AcessToken, *errors.RestError) {
-	session, err := cassandra.GetSession()
-	if err != nil {
-		return nil, errors.NewInternalServerError(err.Error())
-	}
-	defer session.Close()
-
 	var result = access_token.AcessToken{}
-	if err := session.Query(QUERY_SELECT_BY_ACCESS_TOKEN, id).Scan(&result.Token, &result.UserID, &result.ClientID, &result.Expires); err != nil {
+	if err := cassandra.GetSession().Query(QUERY_SELECT_BY_ACCESS_TOKEN, id).Scan(&result.Token, &result.UserID, &result.ClientID, &result.Expires); err != nil {
 		if err == gocql.ErrNotFound {
 			return nil, errors.NewNotFoundError("no access token found with given id")
 		}

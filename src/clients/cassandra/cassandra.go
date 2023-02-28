@@ -9,12 +9,12 @@ import (
 )
 
 var (
-	cluster *gocql.ClusterConfig
+	session *gocql.Session
 )
 
 func InitCluster() {
 	//Connect to Cassandra Cluster:
-	cluster = gocql.NewCluster(os.Getenv("CASSANDRA_CLUSTER"))
+	cluster := gocql.NewCluster(os.Getenv("CASSANDRA_CLUSTER"))
 	cluster.Authenticator = gocql.PasswordAuthenticator{
 		Username: os.Getenv("CASSANDRA_USERNAME"),
 		Password: os.Getenv("CASSANDRA_PASSWORD"),
@@ -29,8 +29,14 @@ func InitCluster() {
 
 	cluster.Keyspace = os.Getenv("CASSANDRA_KEY_SPACE")
 	cluster.Consistency = gocql.Quorum
+
+	var err error
+	if session, err = cluster.CreateSession(); err != nil {
+		panic(err)
+	}
+
 }
 
-func GetSession() (*gocql.Session, error) {
-	return cluster.CreateSession()
+func GetSession() *gocql.Session {
+	return session
 }

@@ -17,11 +17,8 @@ var (
 
 func StartApplication() {
 	cassandra.InitCluster()
-	session, dbErr := cassandra.GetSession()
-	if dbErr != nil {
-		panic(dbErr)
-	}
-	session.Close()
+	session := cassandra.GetSession()
+	defer session.Close()
 
 	accessTokenHandler := http.NewHandler(access_token.NewService(db.New()))
 
