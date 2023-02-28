@@ -5,8 +5,10 @@ go 1.18
 require (
 	github.com/gin-gonic/gin v1.8.2
 	github.com/gocql/gocql v1.3.1
+	github.com/jarcoal/httpmock v1.3.0
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.8.1
+	gopkg.in/resty.v1 v1.12.0
 )
 
 require (
