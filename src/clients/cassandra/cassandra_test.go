@@ -2,6 +2,7 @@ package cassandra
 
 import (
 	"log"
+	"os"
 	"testing"
 
 	"github.com/joho/godotenv"
@@ -12,6 +13,7 @@ func TestMain(m *testing.M) {
 		log.Fatalf("unxepected error was received: %v", err)
 	}
 	InitCluster()
+	os.Exit(m.Run())
 }
 
 func TestGetSession(t *testing.T) {
