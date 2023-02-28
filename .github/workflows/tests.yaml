@@ -11,13 +11,13 @@ jobs:
       runs-on: ubuntu-20.04
 
       steps:
-        - name: Checkout repo
-          uses: actions/checkout@v3
-
         - name: Setup golang
           uses: actions/setup-go@v3
           with:
-            go-version: '1.18'
+            go-version: '1.18.4'
+
+        - name: Checkout repo
+          uses: actions/checkout@v3
 
     unit-tests:
       name: Unit Tests
@@ -27,8 +27,6 @@ jobs:
       steps:
         - name: Checkout repo
           uses: actions/checkout@v3
-          with:
-            go-version: '1.18'
-            
+
         - name: Running Unit Tests
           run: make test
