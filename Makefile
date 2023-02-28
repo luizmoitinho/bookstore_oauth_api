@@ -1,6 +1,5 @@
 
 test: 
-    go mod init
 	go mod tidy
 	- make docker/up
 	go clean -cache
