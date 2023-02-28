@@ -2,7 +2,6 @@ package rest_users
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/luizmoitinho/bookstore_oauth_api/src/domain/users"
@@ -37,7 +36,6 @@ func (r *userRepository) Login(email, password string) (*users.User, *errors.Res
 	if result.StatusCode() >= http.StatusMultipleChoices {
 		var restErr errors.RestError
 		err := json.Unmarshal(result.Body(), &restErr)
-		fmt.Println(string(result.Body()))
 		if err != nil {
 			return nil, errors.NewInternalServerError("invalid error interface when trying to login user")
 		}
