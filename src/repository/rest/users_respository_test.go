@@ -36,8 +36,8 @@ func TestLoginTimeoutFromApi(t *testing.T) {
 
 	assert.Nil(t, user)
 	assert.NotNil(t, err)
-	assert.EqualValues(t, err.Status, http.StatusInternalServerError)
-	assert.EqualValues(t, err.Message, "invalid rest client response when trying to login user")
+	assert.EqualValues(t, http.StatusInternalServerError, err.Status)
+	assert.EqualValues(t, "invalid rest client response when trying to login user", err.Message)
 }
 
 func TestLoginInvalidErrorInterface(t *testing.T) {
@@ -56,7 +56,7 @@ func TestLoginInvalidErrorInterface(t *testing.T) {
 
 	assert.Nil(t, user)
 	assert.NotNil(t, err)
-	assert.EqualValues(t, err.Status, http.StatusInternalServerError)
+	assert.EqualValues(t, http.StatusInternalServerError, err.Status)
 	assert.EqualValues(t, "invalid error interface when trying to login user", err.Message)
 }
 
@@ -82,7 +82,7 @@ func TestLoginInvalidLoginCredentials(t *testing.T) {
 
 	assert.Nil(t, user)
 	assert.NotNil(t, err)
-	assert.EqualValues(t, err.Status, http.StatusNotFound)
+	assert.EqualValues(t, http.StatusNotFound, err.Status)
 	assert.EqualValues(t, "invalid login credentials", err.Message)
 }
 
@@ -92,7 +92,7 @@ func TestLoginInvalidUserResponse(t *testing.T) {
 	defer httpmock.DeactivateAndReset()
 	httpmock.RegisterResponder("POST", "http://bookstore.api.com/users/authenticate",
 		func(req *http.Request) (*http.Response, error) {
-			return httpmock.NewJsonResponse(http.StatusInternalServerError,
+			return httpmock.NewJsonResponse(http.StatusOK,
 				map[string]any{
 					"id":         "25",
 					"first_name": "Luiz Carlos",
@@ -109,7 +109,7 @@ func TestLoginInvalidUserResponse(t *testing.T) {
 
 	assert.Nil(t, user)
 	assert.NotNil(t, err)
-	assert.EqualValues(t, err.Status, http.StatusInternalServerError)
+	assert.EqualValues(t, http.StatusInternalServerError, err.Status)
 	assert.EqualValues(t, "error when trying to unsmarshall users login response", err.Message)
 }
 
