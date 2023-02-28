@@ -13,7 +13,7 @@
 ## Cassandra DB
 ### start the first cassandra node
 ```shell
-docker-compose up -d 
+make docker/up
 ```
 
 ### Cluster connection test
