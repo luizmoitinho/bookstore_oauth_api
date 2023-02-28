@@ -25,5 +25,8 @@ func StartApplication() {
 	accessTokenHandler := http.NewHandler(access_token.NewService(db.New()))
 
 	router.GET("/oauth/access_token/:access_token_id", accessTokenHandler.GetByID)
+	router.POST("/oauth/access_token/", accessTokenHandler.Create)
+	router.PUT("/oauth/access_token/:access_token_id", accessTokenHandler.UpdateExpirationTime)
+
 	router.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 }

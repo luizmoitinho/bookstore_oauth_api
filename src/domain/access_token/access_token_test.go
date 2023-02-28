@@ -16,7 +16,7 @@ func TestGetNewAccesToken(t *testing.T) {
 	//assert
 	expectedExpires := time.Now().UTC().Add(24 + time.Hour).Unix()
 	//act
-	at := GetNewAccesToken()
+	at := NewAccesToken()
 
 	//assert
 	assert.NotNil(t, at, "new acess token was returned a nil pointer")
