@@ -4,7 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/luizmoitinho/bookstore_oauth_api/src/domain/access_token"
+	"github.com/luizmoitinho/bookstore_oauth_api/src/domain/domain"
+	service "github.com/luizmoitinho/bookstore_oauth_api/src/services/access_token"
 	"github.com/luizmoitinho/bookstore_oauth_api/src/utils/errors"
 )
 
@@ -19,10 +20,10 @@ type AccessTokenHandler interface {
 }
 
 type accessTokenHandler struct {
-	service access_token.Service
+	service service.AccessToken
 }
 
-func NewHandler(service access_token.Service) AccessTokenHandler {
+func NewHandler(service service.AccessToken) AccessTokenHandler {
 	return &accessTokenHandler{
 		service: service,
 	}
@@ -39,7 +40,7 @@ func (handler *accessTokenHandler) GetByID(c *gin.Context) {
 }
 
 func (handler *accessTokenHandler) Create(c *gin.Context) {
-	var at access_token.AcessToken
+	var at domain.AcessToken
 	if err := c.ShouldBindJSON(&at); err != nil {
 		badRequestError := errors.NewBadRequestError(INVALID_JSON_BODY)
 		c.JSON(badRequestError.Status, badRequestError)
@@ -62,7 +63,7 @@ func (handler *accessTokenHandler) UpdateExpirationTime(c *gin.Context) {
 		return
 	}
 
-	var updateAt access_token.AcessToken
+	var updateAt domain.AcessToken
 	if err := c.ShouldBindJSON(&updateAt); err != nil {
 		badRequestError := errors.NewBadRequestError(INVALID_JSON_BODY)
 		c.JSON(badRequestError.Status, badRequestError)

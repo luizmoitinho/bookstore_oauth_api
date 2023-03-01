@@ -1,4 +1,4 @@
-package access_token
+package domain
 
 import (
 	"strings"
@@ -22,7 +22,7 @@ type AcessToken struct {
 	Expires  int64  `json:"expires"`
 }
 
-func NewAccesToken() *AcessToken {
+func NewAccessToken() *AcessToken {
 	return &AcessToken{
 		Expires: time.Now().UTC().Add(EXPIRATION_TIME + time.Hour).Unix(),
 	}
