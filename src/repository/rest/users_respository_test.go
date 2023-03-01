@@ -24,7 +24,7 @@ func TestLoginTimeoutFromApi(t *testing.T) {
 	restyClient := resty.New()
 	httpmock.ActivateNonDefault(restyClient.GetClient())
 	defer httpmock.DeactivateAndReset()
-	httpmock.RegisterResponder("POST", "http://bookstore.api.com/user/authenticate",
+	httpmock.RegisterResponder("POST", "http://localhost:8081/user/authenticate",
 		func(req *http.Request) (*http.Response, error) {
 			return httpmock.NewJsonResponse(-1, `{}`)
 		},
@@ -44,7 +44,7 @@ func TestLoginInvalidErrorInterface(t *testing.T) {
 	restyClient := resty.New()
 	httpmock.ActivateNonDefault(restyClient.GetClient())
 	defer httpmock.DeactivateAndReset()
-	httpmock.RegisterResponder("POST", "http://bookstore.api.com/users/authenticate",
+	httpmock.RegisterResponder("POST", "http://localhost:8081/users/authenticate",
 		func(req *http.Request) (*http.Response, error) {
 			return httpmock.NewJsonResponse(http.StatusNotFound, `{"message": "invalid login credentials", "status": "404", "error": "not_found_error"}`)
 		},
@@ -64,7 +64,7 @@ func TestLoginInvalidLoginCredentials(t *testing.T) {
 	restyClient := resty.New()
 	httpmock.ActivateNonDefault(restyClient.GetClient())
 	defer httpmock.DeactivateAndReset()
-	httpmock.RegisterResponder("POST", "http://bookstore.api.com/users/authenticate",
+	httpmock.RegisterResponder("POST", "http://localhost:8081/users/authenticate",
 		func(req *http.Request) (*http.Response, error) {
 			return httpmock.NewJsonResponse(http.StatusNotFound,
 				map[string]any{
@@ -90,7 +90,7 @@ func TestLoginInvalidUserResponse(t *testing.T) {
 	restyClient := resty.New()
 	httpmock.ActivateNonDefault(restyClient.GetClient())
 	defer httpmock.DeactivateAndReset()
-	httpmock.RegisterResponder("POST", "http://bookstore.api.com/users/authenticate",
+	httpmock.RegisterResponder("POST", "http://localhost:8081/users/authenticate",
 		func(req *http.Request) (*http.Response, error) {
 			return httpmock.NewJsonResponse(http.StatusOK,
 				map[string]any{
@@ -117,7 +117,7 @@ func TestLoginNoError(t *testing.T) {
 	restyClient := resty.New()
 	httpmock.ActivateNonDefault(restyClient.GetClient())
 	defer httpmock.DeactivateAndReset()
-	httpmock.RegisterResponder("POST", "http://bookstore.api.com/users/authenticate",
+	httpmock.RegisterResponder("POST", "http://localhost:8081/users/authenticate",
 		func(req *http.Request) (*http.Response, error) {
 			return httpmock.NewJsonResponse(http.StatusOK,
 				map[string]any{
