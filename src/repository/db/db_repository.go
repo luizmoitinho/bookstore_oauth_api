@@ -3,7 +3,7 @@ package db
 import (
 	"github.com/gocql/gocql"
 	"github.com/luizmoitinho/bookstore_oauth_api/src/clients/cassandra"
-	"github.com/luizmoitinho/bookstore_oauth_api/src/domain/domain"
+	domain "github.com/luizmoitinho/bookstore_oauth_api/src/domain/access_token"
 	"github.com/luizmoitinho/bookstore_oauth_api/src/utils/errors"
 )
 
