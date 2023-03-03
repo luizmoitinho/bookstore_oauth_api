@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/luizmoitinho/bookstore_oauth_api/src/domain/domain"
+	domain "github.com/luizmoitinho/bookstore_oauth_api/src/domain/access_token"
 	service "github.com/luizmoitinho/bookstore_oauth_api/src/services/access_token"
 	"github.com/luizmoitinho/bookstore_oauth_api/src/utils/errors"
 )
@@ -40,19 +40,19 @@ func (handler *accessTokenHandler) GetByID(c *gin.Context) {
 }
 
 func (handler *accessTokenHandler) Create(c *gin.Context) {
-	var at domain.AcessToken
-	if err := c.ShouldBindJSON(&at); err != nil {
+	var request domain.AccessTokenRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
 		badRequestError := errors.NewBadRequestError(INVALID_JSON_BODY)
 		c.JSON(badRequestError.Status, badRequestError)
 		return
 	}
 
-	if err := handler.service.Create(at); err != nil {
-		c.JSON(err.Status, err)
+	accessToken, errCreate := handler.service.Create(request)
+	if errCreate != nil {
+		c.JSON(errCreate.Status, errCreate)
 		return
 	}
-
-	c.JSON(http.StatusCreated, at)
+	c.JSON(http.StatusCreated, accessToken)
 }
 
 func (handler *accessTokenHandler) UpdateExpirationTime(c *gin.Context) {
