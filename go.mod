@@ -7,7 +7,8 @@ require (
 	github.com/gocql/gocql v1.3.1
 	github.com/jarcoal/httpmock v1.3.0
 	github.com/joho/godotenv v1.5.1
-	github.com/stretchr/testify v1.8.1
+	github.com/luizmoitinho/bookstore_utils v1.0.3
+	github.com/stretchr/testify v1.8.2
 	gopkg.in/resty.v1 v1.12.0
 )
 

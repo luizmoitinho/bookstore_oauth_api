@@ -3,23 +3,23 @@ package service
 import (
 	domain "github.com/luizmoitinho/bookstore_oauth_api/src/domain/access_token"
 	"github.com/luizmoitinho/bookstore_oauth_api/src/domain/users"
-	"github.com/luizmoitinho/bookstore_oauth_api/src/utils/errors"
+	"github.com/luizmoitinho/bookstore_utils/rest_errors"
 )
 
 type Repository interface {
-	GetByID(string) (*domain.AcessToken, *errors.RestError)
-	Create(domain.AcessToken) *errors.RestError
-	UpdateExpirationTime(domain.AcessToken) *errors.RestError
+	GetByID(string) (*domain.AcessToken, *rest_errors.RestError)
+	Create(domain.AcessToken) *rest_errors.RestError
+	UpdateExpirationTime(domain.AcessToken) *rest_errors.RestError
 }
 
 type RestUsersRepository interface {
-	Login(string, string) (*users.User, *errors.RestError)
+	Login(string, string) (*users.User, *rest_errors.RestError)
 }
 
 type AccessToken interface {
-	GetByID(string) (*domain.AcessToken, *errors.RestError)
-	Create(in domain.AccessTokenRequest) (*domain.AcessToken, *errors.RestError)
-	UpdateExpirationTime(domain.AcessToken) *errors.RestError
+	GetByID(string) (*domain.AcessToken, *rest_errors.RestError)
+	Create(in domain.AccessTokenRequest) (*domain.AcessToken, *rest_errors.RestError)
+	UpdateExpirationTime(domain.AcessToken) *rest_errors.RestError
 }
 
 type service struct {
@@ -34,7 +34,7 @@ func NewAccessToken(u RestUsersRepository, db Repository) AccessToken {
 	}
 }
 
-func (s *service) GetByID(accessTokenID string) (*domain.AcessToken, *errors.RestError) {
+func (s *service) GetByID(accessTokenID string) (*domain.AcessToken, *rest_errors.RestError) {
 	at := domain.AcessToken{Token: accessTokenID}
 	if err := at.IsTokenValid(); err != nil {
 		return nil, err
@@ -47,7 +47,7 @@ func (s *service) GetByID(accessTokenID string) (*domain.AcessToken, *errors.Res
 	return accessToken, nil
 }
 
-func (s *service) Create(in domain.AccessTokenRequest) (*domain.AcessToken, *errors.RestError) {
+func (s *service) Create(in domain.AccessTokenRequest) (*domain.AcessToken, *rest_errors.RestError) {
 	if err := in.Validate(); err != nil {
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func (s *service) Create(in domain.AccessTokenRequest) (*domain.AcessToken, *err
 	return at, nil
 }
 
-func (s *service) UpdateExpirationTime(at domain.AcessToken) *errors.RestError {
+func (s *service) UpdateExpirationTime(at domain.AcessToken) *rest_errors.RestError {
 
 	if err := at.IsTokenValid(); err != nil {
 		return err

@@ -6,14 +6,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/luizmoitinho/bookstore_oauth_api/src/utils/crypto_utils"
-	"github.com/luizmoitinho/bookstore_oauth_api/src/utils/errors"
+	"github.com/luizmoitinho/bookstore_utils/crypto_utils"
+	"github.com/luizmoitinho/bookstore_utils/rest_errors"
 )
 
 const (
 	EXPIRATION_TIME = 24 // 24 hours
 
-	// errors message
+	// rest_errors message
 	INVALID_TOKEN_ID  = "invalid access token id"
 	INVALID_USER_ID   = "invalid user id"
 	INVALID_CLIENT_ID = "invalid client id"
@@ -52,35 +52,35 @@ func (at *AcessToken) GenerateCrypto() {
 	at.Token = crypto_utils.GetMd5(fmt.Sprintf("at-%d-%d-ran", at.UserID, at.Expires))
 }
 
-func (at *AcessToken) IsTokenValid() *errors.RestError {
+func (at *AcessToken) IsTokenValid() *rest_errors.RestError {
 	if len(strings.TrimSpace(at.Token)) == 0 {
-		return errors.NewBadRequestError(INVALID_TOKEN_ID)
+		return rest_errors.NewBadRequestError(INVALID_TOKEN_ID)
 	}
 	return nil
 }
 
-func (at *AcessToken) IsUserIdValid() *errors.RestError {
+func (at *AcessToken) IsUserIdValid() *rest_errors.RestError {
 	if at.UserID <= 0 {
-		return errors.NewBadRequestError(INVALID_USER_ID)
+		return rest_errors.NewBadRequestError(INVALID_USER_ID)
 	}
 	return nil
 }
 
-func (at *AcessToken) IsClientIdValid() *errors.RestError {
+func (at *AcessToken) IsClientIdValid() *rest_errors.RestError {
 	if at.ClientID <= 0 {
-		return errors.NewBadRequestError(INVALID_CLIENT_ID)
+		return rest_errors.NewBadRequestError(INVALID_CLIENT_ID)
 	}
 	return nil
 }
 
-func (at *AcessToken) IsExpiresValid() *errors.RestError {
+func (at *AcessToken) IsExpiresValid() *rest_errors.RestError {
 	if at.Expires <= 0 {
-		return errors.NewBadRequestError(INVALID_EXPIRES)
+		return rest_errors.NewBadRequestError(INVALID_EXPIRES)
 	}
 	return nil
 }
 
-func (at *AcessToken) Validate() *errors.RestError {
+func (at *AcessToken) Validate() *rest_errors.RestError {
 	if err := at.IsTokenValid(); err != nil {
 		return err
 	}
@@ -95,14 +95,14 @@ func (at *AcessToken) Validate() *errors.RestError {
 	}
 	return nil
 }
-func (at *AccessTokenRequest) Validate() *errors.RestError {
+func (at *AccessTokenRequest) Validate() *rest_errors.RestError {
 	switch at.GrantType {
 	case os.Getenv("GRANT_TYPE_PASSWORD"):
 		break
 	case os.Getenv("GRANT_TYPE_CLIENT_CREDENTIALS"):
 		break
 	default:
-		return errors.NewBadRequestError("invid grant_type parameter")
+		return rest_errors.NewBadRequestError("invid grant_type parameter")
 	}
 
 	//TODO: validate parameters for each grant_type

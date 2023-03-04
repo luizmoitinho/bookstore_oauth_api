@@ -5,11 +5,11 @@ import (
 	"net/http"
 
 	"github.com/luizmoitinho/bookstore_oauth_api/src/domain/users"
-	"github.com/luizmoitinho/bookstore_oauth_api/src/utils/errors"
+	"github.com/luizmoitinho/bookstore_utils/rest_errors"
 )
 
 type RestUsersRepository interface {
-	Login(string, string) (*users.User, *errors.RestError)
+	Login(string, string) (*users.User, *rest_errors.RestError)
 }
 
 type userRepository struct {
@@ -22,7 +22,7 @@ func NewRepository(clientInjection Client) RestUsersRepository {
 	}
 }
 
-func (r *userRepository) Login(email, password string) (*users.User, *errors.RestError) {
+func (r *userRepository) Login(email, password string) (*users.User, *rest_errors.RestError) {
 	login := users.Login{
 		Email:    email,
 		Password: password,
@@ -30,21 +30,21 @@ func (r *userRepository) Login(email, password string) (*users.User, *errors.Res
 
 	result, err := r.client.OAuthLoginRequest(&login)
 	if err != nil {
-		return nil, errors.NewInternalServerError("invalid rest client response when trying to login user")
+		return nil, rest_errors.NewInternalServerError("invalid rest client response when trying to login user", err)
 	}
 
 	if result.StatusCode() >= http.StatusMultipleChoices {
-		var restErr errors.RestError
+		var restErr rest_errors.RestError
 		err := json.Unmarshal(result.Body(), &restErr)
 		if err != nil {
-			return nil, errors.NewInternalServerError("invalid error interface when trying to login user")
+			return nil, rest_errors.NewInternalServerError("invalid error interface when trying to login user", err)
 		}
 		return nil, &restErr
 	}
 
 	var user users.User
 	if err := json.Unmarshal(result.Body(), &user); err != nil {
-		return nil, errors.NewInternalServerError("error when trying to unsmarshall users login response")
+		return nil, rest_errors.NewInternalServerError("error when trying to unsmarshall users login response", err)
 	}
 
 	return &user, nil
